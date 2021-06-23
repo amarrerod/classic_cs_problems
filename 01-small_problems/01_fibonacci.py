@@ -1,6 +1,7 @@
 
 from functools import lru_cache
 import time
+from typing import Generator
 
 
 def fib(n: int) -> int:
@@ -54,6 +55,22 @@ def iterative(n: int) -> int:
     return next
 
 
+def fib_generator(n: int) -> Generator[int, None, None]:
+    '''
+        Converting the iterative approach
+        into a generator to produce each number 
+        in the sequence
+    '''
+    yield 0
+    if n > 0:
+        yield 1
+    last: int = 0
+    next: int = 1
+    for _ in range(1, n):
+        last, next = next, last + next
+        yield next
+
+
 def compare_performace(function, n):
     start = time.time()
     result = function(n)
@@ -73,3 +90,5 @@ if __name__ == '__main__':
 
     compare_performace(fib_lru, 100)
     compare_performace(iterative, 100)
+    for i in fib_generator(50):
+        print(i)
